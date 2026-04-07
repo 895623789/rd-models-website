@@ -1,11 +1,27 @@
-import type { Metadata } from "next";
+"use client";
+import { useRef } from "react";
 import Link from "next/link";
-import { Briefcase, MapPin, Clock, ArrowRight } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { Briefcase, MapPin, Clock, ArrowRight, UserPlus, Heart } from "lucide-react";
+import MagneticButton from "@/components/effects/MagneticButton";
 
-export const metadata: Metadata = {
-  title: "Careers at RD Models — Join India's Premier Model Making Studio",
-  description: "Join the RD Models team. We're looking for architects, designers, CNC operators, 3D printing specialists, and craftsmen passionate about precision.",
-};
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function Reveal({ children, delay = 0, y = 30 }: { children: React.ReactNode; delay?: number; y?: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 const openings = [
   { title: "Senior Architect – Model Design", location: "Jaipur", type: "Full-time", desc: "Lead the design and planning of complex architectural models. B.Arch required." },
@@ -19,47 +35,74 @@ const openings = [
 export default function CareersPage() {
   return (
     <>
-      <section className="relative pt-32 pb-20 bg-[var(--bg-atelier)]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,168,67,0.08)_0%,transparent_60%)] pointer-events-none" />
-        <div className="container relative z-10 text-center">
-          <p className="font-[var(--font-accent)] text-xs tracking-[0.2em] uppercase text-[var(--gold-core)] mb-4">Join Our Team</p>
-          <h1 className="font-[var(--font-display)] text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight text-[var(--platinum)]">
-            Build Your Career at{" "}
-            <span className="bg-gradient-to-r from-[var(--gold-core)] via-[var(--gold-ambient)] to-[var(--gold-core)] bg-clip-text text-transparent">RD Models</span>
-          </h1>
-          <p className="text-[var(--silver-slate)] text-lg mt-6 max-w-xl mx-auto">
-            We&apos;re always looking for talented individuals passionate about architecture, craftsmanship, and innovation.
-          </p>
+      {/* ━━━━━━ HERO ━━━━━━ */}
+      <section className="pt-40 pb-20 bg-[var(--bg-snow)]">
+        <div className="structural-container">
+          <div className="max-w-4xl">
+            <Reveal delay={0.1}>
+              <p className="font-[var(--font-accent)] text-xs tracking-[0.2em] uppercase text-[var(--text-muted)] mb-8">
+                Join the Forge
+              </p>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <h1 className="display-hero mb-8">
+                Build The Future, <br />
+                At Scale.
+              </h1>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <p className="text-prose max-w-2xl">
+                We are looking for precision thinkers, architectural dreamers, and fabrication experts to join India's premier model making studio.
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="py-20">
-        <div className="container max-w-4xl">
-          <div className="space-y-5">
-            {openings.map((job) => (
-              <div key={job.title} className="group border border-[rgba(255,255,255,0.06)] bg-gradient-to-br from-[#0F0F18] to-[#141420] rounded-xl p-6 md:p-8 hover:border-[rgba(212,168,67,0.35)] transition-all duration-500">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div>
-                    <h3 className="text-lg font-semibold text-[var(--platinum)]">{job.title}</h3>
-                    <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-[var(--muted)]">
-                      <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{job.location}</span>
-                      <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{job.type}</span>
+      {/* ━━━━━━ OPENINGS: Bento Grid ━━━━━━ */}
+      <section className="py-24 bg-[var(--bg-snow)]">
+        <div className="structural-container">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {openings.map((job, i) => (
+              <Reveal key={job.title} delay={i * 0.1}>
+                <div className="bento-card p-10 h-full group bg-[var(--bg-paper)]">
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-center justify-between mb-8">
+                       <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)] bg-[var(--bg-snow)] px-3 py-1 rounded-full border border-[var(--border-subtle)]">{job.type}</span>
+                       <span className="flex items-center gap-2 text-[10px] font-bold text-[var(--text-muted)] tracking-widest uppercase"><MapPin className="w-3 h-3" /> {job.location}</span>
                     </div>
-                    <p className="text-sm text-[var(--silver-slate)] mt-3 leading-relaxed">{job.desc}</p>
+                    
+                    <h3 className="text-2xl font-bold text-[var(--text-charcoal)] mb-4">{job.title}</h3>
+                    <p className="text-[var(--text-slate)] leading-relaxed mb-12">
+                      {job.desc}
+                    </p>
+                    
+                    <Link href="/contact" className="mt-auto">
+                      <MagneticButton className="btn-outline w-full text-xs py-4">
+                        Apply for Position <ArrowRight className="w-3 h-3" />
+                      </MagneticButton>
+                    </Link>
                   </div>
-                  <Link href="/contact" className="btn-ghost text-xs shrink-0 self-start">
-                    Apply <ArrowRight className="w-3 h-3" />
-                  </Link>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
-          <div className="text-center mt-12 p-8 border border-[rgba(255,255,255,0.06)] rounded-xl">
-            <Briefcase className="w-10 h-10 text-[var(--gold-core)] opacity-30 mx-auto mb-4" />
-            <p className="text-[var(--platinum)] font-medium mb-2">Don&apos;t see your role?</p>
-            <p className="text-sm text-[var(--silver-slate)] mb-4">Send your resume to rdarmodels@gmail.com</p>
-            <a href="mailto:rdarmodels@gmail.com" className="btn-gold text-xs">Send Resume <ArrowRight className="w-3 h-3" /></a>
-          </div>
+
+          {/* Spontaneous Application */}
+          <Reveal delay={0.4}>
+            <div className="mt-20 p-12 rounded-[var(--radius-lg)] border border-dashed border-[var(--border-strong)] bg-[var(--bg-paper)] text-center max-w-4xl mx-auto">
+               <div className="w-16 h-16 bg-[var(--bg-snow)] rounded-full flex items-center justify-center mx-auto mb-6">
+                  <UserPlus className="w-6 h-6 text-[var(--text-muted)]" />
+               </div>
+               <h4 className="text-2xl font-bold mb-4">Don't See Your Ideal Role?</h4>
+               <p className="text-[var(--text-slate)] mb-10 max-w-xl mx-auto">We are always open to meeting world-class talent in CNC, 3D printing, and hand-crafting. Send your portfolio directly to our technical team.</p>
+               <a href="mailto:rdarmodels@gmail.com">
+                  <MagneticButton className="btn-primary px-10 py-5 text-sm uppercase tracking-widest font-bold inline-flex items-center gap-3">
+                     Open Application <Heart className="w-4 h-4" />
+                  </MagneticButton>
+               </a>
+            </div>
+          </Reveal>
         </div>
       </section>
     </>

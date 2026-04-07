@@ -1,70 +1,110 @@
-import type { Metadata } from "next";
+"use client";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { Building2, Globe, Shield, Landmark, GraduationCap, Home, Factory, HardHat, Pickaxe, BookOpen } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Our Clients — Tata, Vedanta, L&T & 700+ More Trust RD Models",
-  description: "RD Models is trusted by India's top companies: Tata, Vedanta, L&T, Reliance, Godrej, Maruti, IIT Jodhpur and 700+ clients across 8+ countries.",
-};
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function Reveal({ children, delay = 0, y = 30 }: { children: React.ReactNode; delay?: number; y?: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
 
 const clients = [
-  { name: "Tata Group", tier: "Enterprise" },
-  { name: "Vedanta Limited", tier: "Enterprise" },
-  { name: "L&T (Larsen & Toubro)", tier: "Enterprise" },
-  { name: "Reliance Industries", tier: "Enterprise" },
-  { name: "Godrej Properties", tier: "Enterprise" },
-  { name: "Maruti Suzuki", tier: "Enterprise" },
-  { name: "IIT Jodhpur", tier: "Institutional" },
-  { name: "KGK Realty", tier: "Real Estate" },
-  { name: "Akshat Group", tier: "Real Estate" },
-  { name: "Ashadeep Group", tier: "Real Estate" },
-  { name: "Radisson Group", tier: "Hospitality" },
-  { name: "EGIS", tier: "Infrastructure" },
-  { name: "SARAS", tier: "Government" },
-  { name: "Vanshdeep Builders", tier: "Real Estate" },
-  { name: "Samurai Group", tier: "Real Estate" },
-  { name: "Lalit Roongta Group", tier: "Real Estate" },
-  { name: "Ocube Architects", tier: "Architecture" },
-  { name: "First Stone", tier: "Real Estate" },
-  { name: "Atelier Asthete", tier: "Architecture" },
-  { name: "Mojika Ultima", tier: "Real Estate" },
-  { name: "PMC Buildskills", tier: "Construction" },
-  { name: "Dhanraj School", tier: "Education" },
-  { name: "HZL - Vedanta", tier: "Mining" },
-  { name: "Sudama Plywood", tier: "Industrial" },
+  { name: "Tata Group", tier: "Enterprise", icon: Landmark },
+  { name: "Vedanta Limited", tier: "Enterprise", icon: Factory },
+  { name: "L&T (Larsen & Toubro)", tier: "Enterprise", icon: HardHat },
+  { name: "Reliance Industries", tier: "Enterprise", icon: Globe },
+  { name: "Godrej Properties", tier: "Enterprise", icon: Home },
+  { name: "Maruti Suzuki", tier: "Enterprise", icon: Factory },
+  { name: "IIT Jodhpur", tier: "Institutional", icon: GraduationCap },
+  { name: "KGK Realty", tier: "Real Estate", icon: Building2 },
+  { name: "Akshat Group", tier: "Real Estate", icon: Building2 },
+  { name: "Ashadeep Group", tier: "Real Estate", icon: Building2 },
+  { name: "Radisson Group", tier: "Hospitality", icon: Home },
+  { name: "EGIS", tier: "Infrastructure", icon: Shield },
+  { name: "SARAS", tier: "Government", icon: Landmark },
+  { name: "Vanshdeep Builders", tier: "Real Estate", icon: Building2 },
+  { name: "Ocube Architects", tier: "Architecture", icon: BookOpen },
+  { name: "Atelier Asthete", tier: "Architecture", icon: BookOpen },
+  { name: "PMC Buildskills", tier: "Construction", icon: HardHat },
+  { name: "Dhanraj School", tier: "Education", icon: GraduationCap },
+  { name: "HZL - Vedanta", tier: "Mining", icon: Pickaxe },
 ];
-
-const tiers = ["All", "Enterprise", "Real Estate", "Institutional", "Architecture", "Infrastructure", "Government", "Hospitality", "Construction", "Education", "Mining", "Industrial"];
 
 export default function ClientsPage() {
   return (
     <>
-      <section className="relative pt-32 pb-20 bg-[var(--bg-atelier)]">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,168,67,0.08)_0%,transparent_60%)] pointer-events-none" />
-        <div className="container relative z-10 text-center">
-          <p className="font-[var(--font-accent)] text-xs tracking-[0.2em] uppercase text-[var(--gold-core)] mb-4">Trusted by Industry Leaders</p>
-          <h1 className="font-[var(--font-display)] text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight text-[var(--platinum)]">
-            700+ Clients,{" "}
-            <span className="bg-gradient-to-r from-[var(--gold-core)] via-[var(--gold-ambient)] to-[var(--gold-core)] bg-clip-text text-transparent">Infinite Trust</span>
-          </h1>
+      {/* ━━━━━━ HERO ━━━━━━ */}
+      <section className="pt-40 pb-20 bg-[var(--bg-snow)]">
+        <div className="structural-container">
+          <div className="max-w-4xl text-center mx-auto">
+            <Reveal delay={0.1}>
+              <p className="font-[var(--font-accent)] text-xs tracking-[0.2em] uppercase text-[var(--text-muted)] mb-8">
+                Trust & Partnerships
+              </p>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <h1 className="display-hero mb-8">
+                An Ecosystem Of <br />
+                Excellence.
+              </h1>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <p className="text-prose max-w-xl mx-auto">
+                Supporting the vision of India's most influential builders, institutions, and government bodies through unparalleled precision.
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="py-20">
-        <div className="container">
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {clients.map((client) => (
-              <div
-                key={client.name}
-                className="group border border-[rgba(255,255,255,0.06)] rounded-xl p-6 text-center hover:border-[rgba(212,168,67,0.35)] hover:bg-[var(--bg-pedestal)] transition-all duration-500"
-              >
-                <div className="w-16 h-16 rounded-xl bg-[var(--bg-pedestal)] border border-[rgba(255,255,255,0.06)] flex items-center justify-center mx-auto mb-3 group-hover:border-[rgba(212,168,67,0.2)] transition-colors">
-                  <span className="text-lg font-bold text-[var(--gold-core)] opacity-40 group-hover:opacity-100 transition-opacity">{client.name.charAt(0)}</span>
+      {/* ━━━━━━ CLIENT GRID ━━━━━━ */}
+      <section className="py-24 bg-[var(--bg-snow)]">
+        <div className="structural-container">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {clients.map((client, i) => (
+              <Reveal key={client.name} delay={i * 0.05}>
+                <div className="bento-card p-8 group bg-[var(--bg-paper)] aspect-square flex flex-col items-center justify-center text-center transition-all duration-500 hover:border-[var(--text-charcoal)]">
+                  <div className="w-12 h-12 bg-[var(--bg-snow)] rounded-xl flex items-center justify-center mb-6 border border-[var(--border-subtle)] group-hover:bg-[var(--text-charcoal)] group-hover:text-white transition-all duration-500">
+                    <client.icon className="w-5 h-5" strokeWidth={1} />
+                  </div>
+                  <h3 className="text-xs font-bold text-[var(--text-charcoal)] tracking-tight line-clamp-1">{client.name}</h3>
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] mt-2">{client.tier}</p>
                 </div>
-                <h3 className="font-medium text-sm text-[var(--platinum)]">{client.name}</h3>
-                <span className="text-[10px] font-[var(--font-accent)] tracking-wider uppercase text-[var(--muted)] mt-1 block">{client.tier}</span>
-              </div>
+              </Reveal>
             ))}
+            
+            {/* The "+700 More" Badge */}
+            <Reveal delay={0.8}>
+               <div className="bento-card p-8 bg-[var(--text-charcoal)] text-white aspect-square flex flex-col items-center justify-center text-center">
+                  <h4 className="text-2xl font-bold">+700</h4>
+                  <p className="text-[10px] font-bold uppercase tracking-widest opacity-60">Global Clients</p>
+               </div>
+            </Reveal>
           </div>
         </div>
+      </section>
+
+      {/* ━━━━━━ TRUST INDICATOR ━━━━━━ */}
+      <section className="py-32 border-t border-[var(--border-subtle)] bg-[var(--bg-paper)]">
+         <div className="structural-container text-center">
+            <Reveal>
+               <h2 className="display-section mb-12">Built For The Best.</h2>
+               <p className="text-prose max-w-2xl mx-auto">From 700-acre campuses to sensitive defense facilities, we have delivered more than 2300+ models that serve as the technical backbone for India's biggest architectural presentations.</p>
+            </Reveal>
+         </div>
       </section>
     </>
   );

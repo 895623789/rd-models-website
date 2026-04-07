@@ -1,19 +1,33 @@
 "use client";
 import { useRef, useState } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Building2, ArrowRight, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { Building2, ArrowRight, X, Filter } from "lucide-react";
+import MagneticButton from "@/components/effects/MagneticButton";
+import TiltCard3D from "@/components/effects/TiltCard3D";
 
-function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+function Reveal({ children, delay = 0, y = 30 }: { children: React.ReactNode; delay?: number; y?: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 40 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] }}>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
       {children}
     </motion.div>
   );
 }
 
+/* ============================================================
+   DATA
+   ============================================================ */
 const cities = ["All", "Jaipur", "Mumbai", "Delhi", "Ahmedabad", "Bangalore", "Hyderabad", "Chennai", "Pune", "Lucknow"];
 const categories = ["All", "Residential", "Commercial", "Industrial", "Institutional", "Township", "Defense", "Railway", "Landscape"];
 
@@ -50,6 +64,9 @@ const projects = [
   { title: "Lucknow Metro Station", city: "Lucknow", category: "Railway", scale: "1:100" },
 ];
 
+/* ============================================================
+   COMPONENT
+   ============================================================ */
 export default function PortfolioPageClient() {
   const [activeCity, setActiveCity] = useState("All");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -63,124 +80,184 @@ export default function PortfolioPageClient() {
 
   return (
     <>
-      <section className="relative pt-32 pb-20 bg-[var(--bg-atelier)]">
-        <div className="absolute inset-0 bg-[var(--gradient-spotlight)] pointer-events-none" />
-        <div className="container relative z-10 text-center">
-          <Reveal>
-            <p className="eyebrow">Our Portfolio</p>
-            <h1 className="font-[var(--font-display)] text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.05] tracking-tight">
-              2300+ Models,{" "}
-              <span className="text-shimmer">Infinite Precision</span>
-            </h1>
-            <p className="text-[var(--silver-slate)] text-lg mt-6 max-w-2xl mx-auto">
-              Explore our portfolio of architectural masterpieces from across India and beyond.
-            </p>
-          </Reveal>
+      {/* ━━━━━━ HERO ━━━━━━ */}
+      <section className="pt-40 pb-20 bg-[var(--bg-snow)]">
+        <div className="structural-container">
+          <div className="max-w-4xl">
+            <Reveal delay={0.1}>
+              <p className="font-[var(--font-accent)] text-xs tracking-[0.2em] uppercase text-[var(--text-muted)] mb-8">
+                Selected Works
+              </p>
+            </Reveal>
+            <Reveal delay={0.2}>
+              <h1 className="display-hero mb-8">
+                The Scale Model <br />
+                Archive.
+              </h1>
+            </Reveal>
+            <Reveal delay={0.3}>
+              <p className="text-prose max-w-2xl">
+                A definitive collection of architectural, industrial, and infrastructure milestones crafted with absolute precision.
+              </p>
+            </Reveal>
+          </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          {/* Filters */}
-          <Reveal>
-            <div className="mb-6">
-              <p className="text-xs font-[var(--font-accent)] text-[var(--muted)] tracking-wider uppercase mb-3">Filter by City</p>
+      {/* ━━━━━━ FILTERS & TOOLS ━━━━━━ */}
+      <section className="pb-16 bg-[var(--bg-snow)] sticky top-[80px] z-30 border-b border-[var(--border-subtle)] backdrop-blur-md bg-white/70">
+        <div className="structural-container">
+          <div className="flex flex-col gap-6 pt-10">
+            {/* Category Slider */}
+            <div className="flex items-center gap-4 no-scrollbar overflow-x-auto pb-2">
+              <Filter className="w-4 h-4 text-[var(--text-muted)] shrink-0" />
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`text-[10px] font-bold uppercase tracking-widest px-5 py-2 rounded-full border transition-all duration-300 whitespace-nowrap ${activeCategory === cat ? 'bg-[var(--text-charcoal)] text-white border-[var(--text-charcoal)]' : 'border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--text-charcoal)] hover:text-[var(--text-charcoal)]'}`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            
+            {/* City Selection */}
+            <div className="flex items-center gap-2 no-scrollbar overflow-x-auto">
+              <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mr-2">Locality:</span>
               <div className="flex flex-wrap gap-2">
                 {cities.map((city) => (
-                  <button key={city} onClick={() => setActiveCity(city)}
-                    className={`px-4 py-2 rounded-full text-xs font-medium font-[var(--font-accent)] tracking-widest uppercase transition-all duration-300 ${activeCity === city ? "bg-[var(--gold-core)] text-[var(--bg-abyss)]" : "border border-[var(--border-gold-low)] text-[var(--silver-slate)] hover:bg-[var(--gold-core)]/10"}`}>
+                  <button
+                    key={city}
+                    onClick={() => setActiveCity(city)}
+                    className={`text-[9px] font-bold uppercase tracking-widest px-4 py-1.5 transition-colors ${activeCity === city ? 'text-[var(--text-charcoal)] bg-[var(--bg-stone)] rounded-md' : 'text-[var(--text-muted)] hover:text-[var(--text-charcoal)]'}`}
+                  >
                     {city}
                   </button>
                 ))}
               </div>
             </div>
-            <div className="mb-10">
-              <p className="text-xs font-[var(--font-accent)] text-[var(--muted)] tracking-wider uppercase mb-3">Filter by Category</p>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
-                  <button key={cat} onClick={() => setActiveCategory(cat)}
-                    className={`px-4 py-2 rounded-full text-xs font-medium font-[var(--font-accent)] tracking-widest uppercase transition-all duration-300 ${activeCategory === cat ? "bg-[var(--gold-core)] text-[var(--bg-abyss)]" : "border border-[var(--border-gold-low)] text-[var(--silver-slate)] hover:bg-[var(--gold-core)]/10"}`}>
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </Reveal>
+          </div>
+        </div>
+      </section>
 
-          {/* Grid */}
-          <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* ━━━━━━ PROJECT GRID ━━━━━━ */}
+      <section className="py-24 bg-[var(--bg-snow)] min-h-[60vh]">
+        <div className="structural-container">
+          <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <AnimatePresence mode="popLayout">
               {filtered.map((project, i) => (
                 <motion.div
                   key={project.title}
                   layout
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                  className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-[var(--bg-pedestal)] border border-[var(--border-subtle)] cursor-pointer"
-                  onClick={() => setLightbox(i)}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-abyss)] via-transparent to-transparent z-10" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Building2 className="w-12 h-12 text-[var(--gold-core)] opacity-15 group-hover:scale-110 transition-transform duration-700" />
-                  </div>
-                  <div className="absolute top-4 right-4 z-20 flex gap-2">
-                    <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-[var(--gold-core)] text-[var(--bg-abyss)] font-[var(--font-accent)] tracking-widest uppercase">{project.city}</span>
-                  </div>
-                  <div className="absolute top-4 left-4 z-20">
-                    <span className="px-2.5 py-1 rounded-full text-[9px] font-medium bg-[var(--bg-glass)] backdrop-blur-lg text-[var(--platinum)] font-[var(--font-accent)] tracking-wider border border-[var(--border-subtle)]">{project.scale}</span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-5 z-20">
-                    <p className="text-xs text-[var(--gold-ambient)] font-[var(--font-accent)] tracking-wider uppercase mb-1">{project.category}</p>
-                    <h3 className="text-base font-semibold text-[var(--platinum)]">{project.title}</h3>
-                  </div>
-                  <div className="absolute inset-0 bg-[var(--bg-abyss)]/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
-                    <span className="btn-ghost text-xs">View Details <ArrowRight className="w-3 h-3" /></span>
-                  </div>
+                  <TiltCard3D intensity={15}>
+                    <div 
+                      className="group cursor-pointer bento-card p-0 h-[400px] flex flex-col relative"
+                      onClick={() => setLightbox(i)}
+                    >
+                      {/* Placeholder Image Space */}
+                      <div className="flex-grow bg-[var(--bg-paper)] relative overflow-hidden">
+                        <div className="absolute inset-0 flex items-center justify-center opacity-[0.05] group-hover:opacity-10 transition-opacity">
+                          <Building2 className="w-24 h-24" />
+                        </div>
+                        
+                        {/* Overlay Badges */}
+                        <div className="absolute top-6 left-6 flex flex-col gap-2 z-20">
+                          <span className="bg-white/80 backdrop-blur-md border border-[var(--border-subtle)] text-[9px] font-bold uppercase px-3 py-1 rounded-full">{project.scale}</span>
+                          <span className="bg-[var(--text-charcoal)] text-white text-[9px] font-bold uppercase px-3 py-1 rounded-full">{project.city}</span>
+                        </div>
+                      </div>
+
+                      {/* Content Lower */}
+                      <div className="p-8 border-t border-[var(--border-subtle)] bg-white group-hover:bg-[var(--bg-snow)] transition-colors duration-500">
+                        <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2">{project.category}</p>
+                        <h3 className="text-lg font-bold text-[var(--text-charcoal)] line-clamp-1">{project.title}</h3>
+                        <div className="mt-4 flex items-center gap-2 text-[10px] font-bold text-[var(--text-charcoal)] opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span>Explore Details</span> <ArrowRight className="w-3 h-3" />
+                        </div>
+                      </div>
+                    </div>
+                  </TiltCard3D>
                 </motion.div>
               ))}
             </AnimatePresence>
           </motion.div>
 
           {filtered.length === 0 && (
-            <div className="text-center py-20">
-              <p className="text-[var(--muted)]">No projects found for this filter combination.</p>
+            <div className="text-center py-40 border border-dashed border-[var(--border-strong)] rounded-[var(--radius-lg)]">
+              <p className="text-[var(--text-muted)] italic">No results found for current filter criteria.</p>
+              <button 
+                onClick={() => { setActiveCity("All"); setActiveCategory("All"); }}
+                className="mt-6 text-xs font-bold underline decoration-[var(--border-strong)] hover:decoration-[var(--text-charcoal)]"
+              >
+                Reset All Filters
+              </button>
             </div>
           )}
         </div>
       </section>
 
-      {/* Lightbox */}
+      {/* ━━━━━━ LIGHTBOX ━━━━━━ */}
       <AnimatePresence>
         {lightbox !== null && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] bg-[rgba(5,5,8,0.95)] backdrop-blur-lg flex items-center justify-center p-4"
+            className="fixed inset-0 z-[1000] bg-white/95 backdrop-blur-xl flex items-center justify-center p-6 md:p-12"
             onClick={() => setLightbox(null)}
           >
-            <button onClick={() => setLightbox(null)} className="absolute top-6 right-6 text-[var(--platinum)] hover:text-[var(--gold-core)] transition-colors">
-              <X className="w-8 h-8" />
-            </button>
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="glass-card p-8 max-w-lg w-full text-center"
+            <motion.button 
+              className="absolute top-10 right-10 p-4 hover:rotate-90 transition-transform duration-500"
+              onClick={() => setLightbox(null)}
+            >
+              <X className="w-8 h-8" strokeWidth={1} />
+            </motion.button>
+            
+            <motion.div 
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 50, opacity: 0 }}
+              className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="aspect-video bg-[var(--bg-pedestal)] rounded-xl mb-6 flex items-center justify-center">
-                <Building2 className="w-16 h-16 text-[var(--gold-core)] opacity-20" />
+              <div className="aspect-[4/3] bg-[var(--bg-stone)] border border-[var(--border-subtle)] rounded-[var(--radius-md)] flex items-center justify-center overflow-hidden">
+                <Building2 className="w-32 h-32 text-[var(--border-strong)] opacity-20" strokeWidth={0.5} />
               </div>
-              <h3 className="text-2xl font-[var(--font-display)] font-bold text-[var(--platinum)] mb-2">{filtered[lightbox]?.title}</h3>
-              <div className="flex justify-center gap-3 mt-3 mb-6">
-                <span className="px-3 py-1 rounded-full text-xs bg-[var(--gold-core)] text-[var(--bg-abyss)] font-bold uppercase tracking-widest">{filtered[lightbox]?.city}</span>
-                <span className="px-3 py-1 rounded-full text-xs border border-[var(--border-gold-low)] text-[var(--silver-slate)] uppercase tracking-widest">{filtered[lightbox]?.category}</span>
-                <span className="px-3 py-1 rounded-full text-xs border border-[var(--border-gold-low)] text-[var(--silver-slate)] uppercase tracking-widest">{filtered[lightbox]?.scale}</span>
+              
+              <div>
+                <p className="font-[var(--font-accent)] text-xs tracking-[0.2em] uppercase text-[var(--text-muted)] mb-6">Case Study / Portfolio</p>
+                <h2 className="display-section mb-6">{projects[lightbox].title}</h2>
+                <div className="grid grid-cols-2 gap-8 py-8 border-y border-[var(--border-subtle)] mb-10">
+                  <div>
+                    <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-2">Location</p>
+                    <p className="text-lg font-bold">{projects[lightbox].city}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-2">Sector</p>
+                    <p className="text-lg font-bold">{projects[lightbox].category}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-2">Precision Scale</p>
+                    <p className="text-lg font-bold">{projects[lightbox].scale}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-[var(--text-muted)] uppercase mb-2">Project ID</p>
+                    <p className="text-lg font-bold">RD-{1000 + lightbox}</p>
+                  </div>
+                </div>
+                
+                <Link href="/quote">
+                  <MagneticButton className="btn-primary w-full py-5">
+                    Request Similar Build <ArrowRight className="w-4 h-4" />
+                  </MagneticButton>
+                </Link>
               </div>
-              <Link href="/quote" className="btn-gold text-xs">Get a Quote for Similar Project <ArrowRight className="w-3 h-3" /></Link>
             </motion.div>
           </motion.div>
         )}
