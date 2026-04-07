@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useInView, AnimatePresence } from "framer-motion";
@@ -68,9 +68,29 @@ const projects = [
    COMPONENT
    ============================================================ */
 export default function PortfolioPageClient() {
-  const [activeCity, setActiveCity] = useState("All");
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeCity, setActiveCity] = useState('All');
+  const [isNavbarHidden, setIsNavbarHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
   const [lightbox, setLightbox] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > 200 && currentScrollY > lastScrollY) {
+        setIsNavbarHidden(true);
+      } else {
+        setIsNavbarHidden(false);
+      }
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  const categories = ["All", "Residential", "Commercial", "Industrial", "Institutional", "Township", "Defense", "Railway", "Landscape"];
+  const cities = ["All", "Jaipur", "Mumbai", "Delhi", "Ahmedabad", "Bangalore", "Hyderabad", "Chennai", "Pune", "Lucknow"];
 
   const filtered = projects.filter(
     (p) =>
@@ -104,38 +124,74 @@ export default function PortfolioPageClient() {
         </div>
       </section>
 
-      {/* ━━━━━━ FILTERS & TOOLS ━━━━━━ */}
-      <section className="pb-16 bg-[var(--bg-snow)] sticky top-[80px] z-30 border-b border-[var(--border-subtle)] backdrop-blur-md bg-white/70">
-        <div className="structural-container">
-          <div className="flex flex-col gap-6 pt-10">
-            {/* Category Slider */}
-            <div className="flex items-center gap-4 no-scrollbar overflow-x-auto pb-2">
-              <Filter className="w-4 h-4 text-[var(--text-muted)] shrink-0" />
-              {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`text-[10px] font-bold uppercase tracking-widest px-5 py-2 rounded-full border transition-all duration-300 whitespace-nowrap ${activeCategory === cat ? 'bg-[var(--text-charcoal)] text-white border-[var(--text-charcoal)]' : 'border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--text-charcoal)] hover:text-[var(--text-charcoal)]'}`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-            
-            {/* City Selection */}
-            <div className="flex items-center gap-2 no-scrollbar overflow-x-auto">
-              <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-widest mr-2">Locality:</span>
-              <div className="flex flex-wrap gap-2">
-                {cities.map((city) => (
-                  <button
-                    key={city}
-                    onClick={() => setActiveCity(city)}
-                    className={`text-[9px] font-bold uppercase tracking-widest px-4 py-1.5 transition-colors ${activeCity === city ? 'text-[var(--text-charcoal)] bg-[var(--bg-stone)] rounded-md' : 'text-[var(--text-muted)] hover:text-[var(--text-charcoal)]'}`}
-                  >
-                    {city}
-                  </button>
-                ))}
+      {/* ━━━━━━ ARCHIVE CONTROL PANEL (Ultra-Premium Redesign) ━━━━━━ */}
+      <section 
+        className="sticky z-30 transition-all duration-500 group/filters"
+        style={{ 
+          top: isNavbarHidden ? '0px' : 'clamp(80px, 12vw, 96px)' 
+        }}
+      >
+        <div className="bg-white/90 backdrop-blur-xl border-b border-[var(--border-subtle)] shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
+          <div className="structural-container">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between min-h-[70px] py-4 lg:py-0 gap-8">
+              
+              {/* Left: Sector Selection (Technical Links) */}
+              <div className="flex items-center gap-6 lg:gap-10 overflow-x-auto no-scrollbar">
+                <div className="flex items-center gap-3 shrink-0 py-4 lg:py-6">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--text-charcoal)] animate-pulse" />
+                  <p className="text-[10px] font-bold text-[var(--text-charcoal)] uppercase tracking-[0.25em]">Sectors</p>
+                </div>
+                
+                <div className="flex items-center gap-6 lg:gap-8 min-w-max">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      className="group/link relative py-4 lg:py-6 flex flex-col items-center justify-center transition-all duration-300"
+                    >
+                      <span className={`text-[10px] lg:text-[11px] font-medium uppercase tracking-widest transition-colors duration-300 ${activeCategory === cat ? 'text-[var(--text-charcoal)] font-bold' : 'text-[var(--text-muted)] group-hover/link:text-[var(--text-charcoal)]'}`}>
+                        {cat}
+                      </span>
+                      {activeCategory === cat && (
+                        <motion.div 
+                          layoutId="cat-indicator"
+                          className="absolute bottom-0 w-full h-[2px] bg-[var(--text-charcoal)]"
+                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
+
+              {/* Center/Divider: Technical ID */}
+              <div className="hidden xl:flex items-center gap-3 text-[10px] font-mono text-[var(--text-muted)] opacity-40">
+                <span>[ INDEX_REF: RD_ARCHIVE_2024 ]</span>
+                <div className="w-[40px] h-[1px] bg-[var(--border-subtle)]" />
+              </div>
+
+              {/* Right: Regions & Global Stats */}
+              <div className="flex items-center gap-8 lg:gap-12">
+                <div className="flex items-center gap-4 py-2 px-4 bg-[var(--bg-snow)] rounded-md border border-[var(--border-subtle)]">
+                  <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest">Region:</span>
+                  <select 
+                    value={activeCity}
+                    onChange={(e) => setActiveCity(e.target.value)}
+                    className="bg-transparent text-[11px] font-bold text-[var(--text-charcoal)] uppercase tracking-wider outline-none cursor-pointer"
+                  >
+                    {cities.map(city => <option key={city} value={city}>{city}</option>)}
+                  </select>
+                </div>
+
+                <div className="flex flex-col items-end shrink-0">
+                  <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-widest leading-none mb-1">Total Assets</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-xl font-light font-mono leading-none">{filtered.length.toString().padStart(2, '0')}</span>
+                    <span className="text-[9px] font-bold text-[var(--text-muted)]">/ {projects.length}</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

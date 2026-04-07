@@ -27,7 +27,41 @@ function Reveal({ children, delay = 0, y = 30 }: { children: React.ReactNode; de
    ============================================================ */
 export default function QuotePageClient() {
   const [submitted, setSubmitted] = useState(false);
-  const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
+  
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    // Extract values
+    const data = {
+      name: formData.get('name'),
+      company: formData.get('company'),
+      email: formData.get('email'),
+      phone: formData.get('phone'),
+      category: formData.get('category'),
+      scale: formData.get('scale'),
+      timeline: formData.get('timeline'),
+      mission: formData.get('mission'),
+      hardware: Array.from(formData.getAll('hardware')).join(', ')
+    };
+
+    // Construct WhatsApp Message
+    const text = `*New Quote Request - RD Models*%0A%0A` +
+      `*Identity:* ${data.name} (${data.company || 'Individual'})%0A` +
+      `*Contact:* ${data.phone} | ${data.email}%0A%0A` +
+      `*Technical Specs:*%0A` +
+      `- Category: ${data.category}%0A` +
+      `- Scale: ${data.scale}%0A` +
+      `- Timeline: ${data.timeline || 'TBD'}%0A` +
+      `- Features: ${data.hardware || 'Standard'}%0A%0A` +
+      `*Mission Brief:*%0A${data.mission || 'No mission brief provided.'}`;
+
+    const whatsappUrl = `https://wa.me/919672232299?text=${text}`;
+    
+    // Redirect
+    window.open(whatsappUrl, '_blank');
+    setSubmitted(true);
+  };
 
   return (
     <>
@@ -86,19 +120,19 @@ export default function QuotePageClient() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Full Name</label>
-                          <input type="text" required placeholder="Name" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none transition-all" />
+                          <input name="name" type="text" required placeholder="Name" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none transition-all" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Entity / Company</label>
-                          <input type="text" placeholder="Organization" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none transition-all" />
+                          <input name="company" type="text" placeholder="Organization" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none transition-all" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Electronic Mail</label>
-                          <input type="email" required placeholder="email@address.com" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none transition-all" />
+                          <input name="email" type="email" required placeholder="email@address.com" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none transition-all" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Phone Line</label>
-                          <input type="tel" required placeholder="+91" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none transition-all" />
+                          <input name="phone" type="tel" required placeholder="+91" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none transition-all" />
                         </div>
                       </div>
                     </div>
@@ -112,7 +146,7 @@ export default function QuotePageClient() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Project Category</label>
-                          <select className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none cursor-pointer appearance-none">
+                          <select name="category" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none cursor-pointer appearance-none">
                             <option>Architectural Residential</option>
                             <option>Commercial / Township</option>
                             <option>Industrial / Plant</option>
@@ -121,7 +155,7 @@ export default function QuotePageClient() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Precision Scale</label>
-                          <select className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none cursor-pointer appearance-none">
+                          <select name="scale" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none cursor-pointer appearance-none">
                             <option>1:100 (High Detail)</option>
                             <option>1:200 (Standard)</option>
                             <option>1:500 (Massing)</option>
@@ -136,7 +170,7 @@ export default function QuotePageClient() {
                           <div className="flex flex-wrap gap-3">
                             {["Integrated LED", "Motorized Systems", "Terrain Topography", "Interior Fit-out"].map((tag) => (
                               <label key={tag} className="flex items-center gap-2 group cursor-pointer">
-                                <input type="checkbox" className="w-4 h-4 rounded border-[var(--border-strong)] checked:bg-[var(--text-charcoal)]" />
+                                <input name="hardware" value={tag} type="checkbox" className="w-4 h-4 rounded border-[var(--border-strong)] checked:bg-[var(--text-charcoal)]" />
                                 <span className="text-xs font-medium text-[var(--text-slate)] group-hover:text-[var(--text-charcoal)]">{tag}</span>
                               </label>
                             ))}
@@ -144,7 +178,7 @@ export default function QuotePageClient() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Target Timeline</label>
-                          <input type="date" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none" />
+                          <input name="timeline" type="date" className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none" />
                         </div>
                       </div>
                     </div>
@@ -157,7 +191,7 @@ export default function QuotePageClient() {
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Project Mission</label>
-                        <textarea rows={3} placeholder="Describe the soul of the project..." className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none resize-none transition-all" />
+                        <textarea name="mission" rows={3} placeholder="Describe the soul of the project..." className="w-full bg-transparent border-b border-[var(--border-strong)] py-4 focus:border-[var(--text-charcoal)] outline-none resize-none transition-all" />
                       </div>
                       <div className="p-12 border-2 border-dashed border-[var(--border-strong)] rounded-[var(--radius-md)] text-center group cursor-pointer hover:bg-[var(--bg-snow)] transition-colors">
                         <Upload className="w-10 h-10 text-[var(--border-strong)] mx-auto mb-4 group-hover:text-[var(--text-charcoal)] transition-colors" strokeWidth={1} />

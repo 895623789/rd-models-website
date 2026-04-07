@@ -8,6 +8,7 @@ import ScrollProgress from "@/components/effects/ScrollProgress";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFAB from "@/components/common/WhatsAppFAB";
+import AIChatBot from "@/components/common/AIChatBot";
 
 // Fonts setup
 const cormorantGaramond = Cormorant_Garamond({
@@ -89,6 +90,11 @@ export const metadata: Metadata = {
     description:
       "2300+ models. 700+ clients. Crafting architectural masterpieces since 2014.",
     images: ["/og-image.jpg"],
+  },
+  icons: {
+    icon: "/rd-brand-img.png",
+    apple: "/rd-brand-img.png",
+    shortcut: "/rd-brand-img.png",
   },
 };
 
@@ -193,6 +199,7 @@ export default function RootLayout({
           <main className="relative z-10 flex min-h-screen flex-col">{children}</main>
           <Footer />
           <WhatsAppFAB />
+          <AIChatBot />
         </LenisProvider>
       </body>
     </html>

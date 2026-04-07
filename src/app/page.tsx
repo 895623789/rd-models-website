@@ -105,8 +105,7 @@ export default function HomePage() {
           className="structural-container relative z-10"
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-12 xl:col-span-7">
               <Reveal delay={0.1}>
                 <p className="font-[var(--font-accent)] text-xs tracking-widest uppercase text-[var(--text-muted)] mb-6">
                   India's Premier Scale Model Maker
@@ -115,10 +114,25 @@ export default function HomePage() {
               
               <Reveal delay={0.2}>
                 <h1 className="display-hero mb-6">
-                  Where Vision <br />
+                  Where Vision <br className="hidden md:block" />
                   Becomes Structure.
                 </h1>
               </Reveal>
+
+              {/* Mobile Only: Modern Brand Image Integration */}
+              <div className="lg:hidden mb-12">
+                <Reveal delay={0.3} y={10}>
+                  <div className="w-full aspect-square max-h-[350px] mx-auto bg-white border border-[var(--border-subtle)] rounded-[var(--radius-lg)] shadow-lg overflow-hidden relative group">
+                    <Image 
+                      src="/rd-brand-img.png" 
+                      alt="RD Models Brand Showcase" 
+                      fill 
+                      className="object-contain p-4 transition-transform duration-[2000ms] group-hover:scale-105"
+                      priority
+                    />
+                  </div>
+                </Reveal>
+              </div>
               
               <Reveal delay={0.3}>
                 <p className="text-prose max-w-xl mb-12">
@@ -127,14 +141,14 @@ export default function HomePage() {
               </Reveal>
               
               <Reveal delay={0.4}>
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-col sm:flex-row gap-4">
                   <Link href="/portfolio">
-                    <MagneticButton className="btn-primary">
+                    <MagneticButton className="btn-primary w-full sm:w-auto">
                       Explore Our Work
                     </MagneticButton>
                   </Link>
                   <a href="https://www.youtube.com/@rdmodels" target="_blank" rel="noopener noreferrer">
-                    <MagneticButton className="btn-outline">
+                    <MagneticButton className="btn-outline w-full sm:w-auto">
                       <Play className="w-4 h-4" /> The Process
                     </MagneticButton>
                   </a>
@@ -142,23 +156,22 @@ export default function HomePage() {
               </Reveal>
             </div>
 
-            {/* 3D Blueprint/Hero Visual Abstract */}
-            <div className="lg:col-span-5 hidden lg:block">
+            {/* Desktop Only 3D Visual */}
+            <div className="lg:col-span-12 xl:col-span-5 hidden lg:block">
               <Reveal delay={0.5} y={0}>
                 <TiltCard3D intensity={10}>
-                  <div className="w-full aspect-[4/5] bg-[var(--bg-snow)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] shadow-[var(--shadow-float)] relative overflow-hidden group">
+                  <div className="w-full aspect-[4/5] bg-white border border-[var(--border-subtle)] rounded-[var(--radius-lg)] shadow-[var(--shadow-float)] relative overflow-hidden group">
                     <Image 
                       src="/rd-brand-img.png" 
-                      alt="RD Models Brand Showcase" 
+                      alt="RD Models Brand Showcase Desktop" 
                       fill 
-                      className="object-cover transform group-hover:scale-105 transition-transform duration-1000"
+                      className="object-contain p-8 transform group-hover:scale-105 transition-transform duration-1000"
                       priority
                     />
                   </div>
                 </TiltCard3D>
               </Reveal>
             </div>
-            
           </div>
         </motion.div>
       </section>
@@ -299,13 +312,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
-      <style jsx global>{`
-        @keyframes marquee {
-          from { transform: translateX(0); }
-          to { transform: translateX(-33.33%); }
-        }
-      `}</style>
     </>
   );
 }
