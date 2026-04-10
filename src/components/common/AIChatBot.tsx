@@ -33,9 +33,16 @@ Every new conversation MUST start with:
 - Only use this tag when a call is genuinely helpful to close a lead.
 
 ### CORE COMPANY LORE:
-- Founded: 2014 by Ar. Rohitash Daiya.
-- 2300+ models delivered. 100+ craftsmen.
+- Clients: Over 75 prestigious clients including JDA (Jaipur Development Authority), CPWD, IRCON, Smart City Jaipur, RIICO, Rajasthan Police, and major private firms.
+- National Presence: 6 major workshops in Jaipur, Mumbai, Hyderabad, Delhi, Bangalore, and Ahmedabad.
+- Capacity: 2000+ models delivered since 2012.
+- Specialized Services: 5D CNC Carving, Vacuum Forming, Large 3D Scanning, and Rapid Prototyping.
+- Notable Feat: Delivered PM Modi's Airport Model in less than 24 hours.
+- Contact: +91-9672232299, rdarmodels@gmail.com.
+- Location: Sector 8, Pratap Nagar, Jaipur, Rajasthan.
+- Notable Projects: Mahakumbh 2025 Masterplan, Museum of The Future, NK ANANTYA.
 - Speciality: High-detail Architectural, Industrial, and Defense models.
+- Slogan: "Where Ideas Take Shape"
 `;
 
 // Initialize Gemini

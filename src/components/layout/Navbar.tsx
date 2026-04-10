@@ -9,8 +9,10 @@ import MagneticButton from "@/components/effects/MagneticButton";
 
 const links = [
   { name: "Models", href: "/portfolio" },
-  { name: "Services", href: "/services" },
+  { name: "Videos", href: "/videos" },
+  { name: "Clients", href: "/clients" },
   { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact-us" },
 ];
 
 export default function Navbar() {

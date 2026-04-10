@@ -66,16 +66,16 @@ export default function FounderSection() {
               <div className="relative mb-8">
                 <Quote className="absolute -top-6 -left-8 w-12 h-12 text-[var(--border-subtle)]" strokeWidth={1} />
                 <p className="text-prose relative z-10">
-                  What started as a childhood passion for miniature making has evolved into India's leading architectural model-making studio. As an architect, I understand that a model is not just a scale representation—it is the bridge between a vision and its physical reality.
+                  "Architecture is about precision, but model making is about passion. I am an architect who chose my childhood hobby as my profession, and that makes all the difference in every model we build."
                 </p>
               </div>
 
               <div className="space-y-6 text-[var(--text-slate)] text-sm md:text-base leading-relaxed">
                 <p>
-                  Established in 2012, RD Models was born from Ar. Rohitash Daiya's commitment to pushing the boundaries of craftsmanship. From a single workshop in Jaipur, he has expanded RD Models into a nationwide name with a presence in Delhi, Bangalore, Hyderabad, and Mumbai.
+                  Ar. Rohitash Daiya, an architect by training and a craftsman by heart, established RD Models 12 years ago with a single-minded focus: to redefine architectural visualization in India. His unique perspective as an architect allows him to understand structural complexities that others might miss.
                 </p>
                 <p>
-                  His philosophy is simple: **Precision is Paramount.** Under his leadership, the team combines traditional hand-crafting techniques with cutting-edge 3D printing and CNC technology to deliver models that are unmatched in detail and accuracy.
+                  Under his visionary leadership, RD Models has grown from a specialized studio into India's foremost model-making company, operating a nationwide network of workshops. We combine traditional high-fidelity hand-crafting with state-of-the-art CNC, 3D Scanning, and 5D Carving technologies.
                 </p>
               </div>
 

@@ -18,6 +18,17 @@ const LinkedinIcon = () => (
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>
   </svg>
 );
+const FacebookIcon = () => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+  </svg>
+);
+const WhatsAppIcon = () => (
+  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 1 1-7.6-11.2 8.38 8.38 0 0 1 3.5 1"/>
+    <path d="M16 12l2-1.5L20 12l-2 1.5L16 12z"/>
+  </svg>
+);
 
 const quickLinks = [
   { name: "Portfolio", href: "/portfolio" },
@@ -30,7 +41,9 @@ const quickLinks = [
 const socials = [
   { name: "Instagram", href: "https://www.instagram.com/rd.models/", icon: InstagramIcon },
   { name: "YouTube", href: "https://www.youtube.com/@rdmodels", icon: YoutubeIcon },
-  { name: "LinkedIn", href: "https://www.linkedin.com/company/rd-models", icon: LinkedinIcon },
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/rdmodels/posts/", icon: LinkedinIcon },
+  { name: "Facebook", href: "https://www.facebook.com/rdarmodels", icon: FacebookIcon },
+  { name: "WhatsApp", href: "https://wa.me/+9672232299", icon: WhatsAppIcon },
 ];
 
 export default function Footer() {
@@ -64,7 +77,7 @@ export default function Footer() {
                 />
               </Link>
               <p className="text-sm text-[var(--text-slate)] leading-relaxed mb-8 max-w-sm">
-                India&apos;s premier architectural scale model studio. Transforming complex concepts into precision reality since 2014.
+                Leading 3D architectural modeling company based in Jaipur, Rajasthan. Transforming complex building concepts into precision visualizations since 2012.
               </p>
               <div className="flex gap-4">
                 {socials.map((social) => (

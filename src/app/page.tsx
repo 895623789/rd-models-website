@@ -7,27 +7,29 @@ import { ArrowRight, Play, Building2, ExternalLink } from "lucide-react";
 import TiltCard3D from "@/components/effects/TiltCard3D";
 import MagneticButton from "@/components/effects/MagneticButton";
 import FounderSection from "@/components/sections/FounderSection";
+import CaseStudySection from "@/components/sections/CaseStudySection";
+import ProcessSection from "@/components/sections/ProcessSection";
 
 /* ============================================================
    DATA
    ============================================================ */
 const stats = [
-  { value: 2300, suffix: "+", label: "Models Delivered" },
+  { value: 2300, suffix: "+", label: "Projects Delivered" },
   { value: 700, suffix: "+", label: "Global Clients" },
-  { value: 8, suffix: "+", label: "Countries Served" },
-  { value: 10, suffix: "+", label: "Years of Precision" },
+  { value: 8, suffix: "+", label: "Workshop Network" },
+  { value: 12, suffix: "+", label: "Years Experience" },
 ];
 
 const clientLogos = [
-  "TATA", "VEDANTA", "L&T", "RELIANCE", "GODREJ", "MARUTI", "IIT JODHPUR",
-  "RADISSON", "EGIS", "SARAS",
+  "GODREJ", "L&T", "VEDANTA", "TATA", "RELIANCE", "JDA", "CPWD", "IRCON", "GODREJ",
+  "RADISSON", "EGIS", "MARUTI", "IIT JODHPUR", "ASHADEEP", "SANKALP",
 ];
 
 const projects = [
-  { title: "Luxury Villa Complex", city: "Jaipur", type: "Residential", colSpan: "md:col-span-8" },
-  { title: "Corporate Tower", city: "Mumbai", type: "Commercial", colSpan: "md:col-span-4" },
-  { title: "IIT Jodhpur Campus", city: "Jaipur", type: "Institutional", colSpan: "md:col-span-4" },
-  { title: "Metro Station Layout", city: "Delhi", type: "Infrastructure", colSpan: "md:col-span-8" },
+  { title: "Mahakumbh 2025 Masterplan", city: "Prayagraj", type: "Masterplan", colSpan: "md:col-span-8" },
+  { title: "Museum of The Future", city: "Dubai", type: "Art Model", colSpan: "md:col-span-4" },
+  { title: "IIT Jodhpur Campus", city: "Jodhpur", type: "Institutional", colSpan: "md:col-span-4" },
+  { title: "PM Modi Airport Model", city: "24-Hour Delivery", type: "Precision High-Speed", colSpan: "md:col-span-8" },
 ];
 
 /* ============================================================
@@ -136,7 +138,7 @@ export default function HomePage() {
               
               <Reveal delay={0.3}>
                 <p className="text-prose max-w-xl mb-12">
-                  From blueprint to reality. Crafting profound architectural models for real estate, industry, and defense since 2014.
+                  "Where Ideas Take Shape." Crafting high-fidelity architectural models for real estate, industry, and defense. From 24-hour rapid delivery feats for PM Modi to global iconic structures.
                 </p>
               </Reveal>
               
@@ -195,6 +197,12 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ━━━━━━ CASE STUDY: PM MODI AIRPORT MODEL ━━━━━━ */}
+      <CaseStudySection />
+
+      {/* ━━━━━━ PROCESS: CONCEPT TO MASTERPIECE ━━━━━━ */}
+      <ProcessSection />
 
       {/* ━━━━━━ BENTO GRID SERVICES (Ngrok Style) ━━━━━━ */}
       <section className="py-32" id="services">
